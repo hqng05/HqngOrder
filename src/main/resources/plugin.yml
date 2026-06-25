@@ -1,0 +1,9 @@
+name: HqngOrder
+version: '${version}'
+
+main: tech.qhuyy.hqngOrder.HqngOrder
+api-version: '1.21.8'
+load: STARTUP
+
+authors: [ hqng05 ]
+website: https://qhuyy.tech
