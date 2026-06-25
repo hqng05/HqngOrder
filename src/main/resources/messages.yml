@@ -1,0 +1,59 @@
+# ═══════════════════════════════════════════════════════════════
+# HqngOrder — Default Messages (MiniMessage format)
+# ═══════════════════════════════════════════════════════════════
+
+prefix: "<gradient:#FF6B35:#FFA500>HqngOrder</gradient:>"
+
+# ─── Command & Permission Messages ────────────────────────────
+no-permission: "<red>❌ You don't have permission to use this command!</red>"
+plugin-reloaded: "<green>✅ Plugin configuration reloaded successfully!</green>"
+plugin-enabled: "<green>✅ HqngOrder has been enabled!</green>"
+plugin-disabled: "<green>✅ HqngOrder has been disabled!</green>"
+error: "<red>❌ An error occurred: <error></red>"
+
+# ─── Chat Input Messages ──────────────────────────────────────
+prompt-enter-amount: "<yellow>Please enter the quantity (positive integer):</yellow>"
+prompt-enter-price: "<yellow>Please enter the price per item (e.g., 10.5):</yellow>"
+invalid-amount: "<red>❌ Invalid amount! Please enter a positive integer.</red>"
+invalid-price: "<red>❌ Invalid price! Please enter a positive number.</red>"
+input-cancelled: "<red>❌ Input cancelled.</red>"
+
+# ─── Order Messages ───────────────────────────────────────────
+order-created: "<green>✅ Order created successfully! ID: <order_id></green>"
+order-cancelled: "<green>✅ Order <order_id> has been cancelled! Refund issued.</green>"
+order-expired: "<red>⏰ Order #<order_id> has expired and been refunded.</red>"
+order-locked: "<red>🔒 This order is currently being delivered by someone else!</red>"
+cannot-deliver-self: "<red>❌ You cannot deliver to yourself!</red>"
+not-enough-money: "<red>❌ You don't have enough money to create this order!</red>"
+admin-cancel-success: "<green>✅ Order <order_id> has been force-cancelled by admin!</green>"
+
+# ─── Delivery Messages ────────────────────────────────────────
+delivery-success: "<green>✅ Delivery successful! You received <payment></green>"
+delivery-cancelled: "<red>❌ Delivery cancelled, order unlocked.</red>"
+delivery-received: "<green>📦 Items delivered to your stash for order #<order_id>!</green>"
+item-mismatch: "<red>❌ This item doesn't match the order requirements!</red>"
+stash-full: "<red>❌ Buyer's stash is full! Cannot complete delivery.</red>"
+
+# ─── Stash Messages ──────────────────────────────────────────
+stash-title: "<gradient:#FF6B35:#FFA500>📦 Your Stash</gradient:>"
+stash-empty: "<gray>📦 Your stash is currently empty.</gray>"
+stash-opened: "<green>✅ Stash has been opened!</green>"
+
+# ─── GUI Titles ──────────────────────────────────────────────
+market-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ ⚊ ⚊ Black Market ⚊ ⚊ ⚊ ⚊ ⚊</gradient:>"
+your-orders-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ ⚊ ⚊ Your Orders ⚊ ⚊ ⚊ ⚊ ⚊</gradient:>"
+item-selector-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Item Selector ⚊ ⚊ ⚊</gradient:>"
+item-edit-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Customize Item ⚊ ⚊ ⚊</gradient:>"
+enchant-selector-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ Select Enchantments ⚊ ⚊</gradient:>"
+confirm-order-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Confirm Order ⚊ ⚊ ⚊</gradient:>"
+delivery-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Deliver Items ⚊ ⚊ ⚊</gradient:>"
+confirm-delivery-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ Confirm Delivery ⚊ ⚊</gradient:>"
+admin-panel-title: "<gradient:#FF4444:#FF6666>⚊ ⚊ ⚊ Admin Panel ⚊ ⚊ ⚊</gradient:>"
+
+# ─── Loading Messages ────────────────────────────────────────
+loading-orders: "<yellow>⏳ Loading orders...</yellow>"
+orders-loaded: "<green>✅ Loaded <count> orders!</green>"
+
+# ─── Economy Messages ────────────────────────────────────────
+money-added: "<green>✅ Added <amount> to <player_name>'s account</green>"
+money-withdrawn: "<green>✅ Withdrawn <amount> from <player_name>'s account</green>"

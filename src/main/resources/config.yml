@@ -1,0 +1,34 @@
+# ═══════════════════════════════════════════════════════════════
+# HqngOrder — Configuration
+# ═══════════════════════════════════════════════════════════════
+
+# ─── Database ───────────────────────────────────────────────
+# Supported types: sqlite, mysql
+database:
+  type: sqlite
+
+  # ─── MySQL Settings ──────────────────────────────────────
+  # Only used when database.type is set to "mysql".
+  mysql:
+    host: localhost
+    port: 3306
+    database: hqngorder_database
+    username: hqngorder
+    password: password
+    use-ssl: false
+
+  # ─── SQLite Settings ─────────────────────────────────────
+  # Only used when database.type is set to "sqlite".
+  # File is stored relative to the plugin's data folder.
+  sqlite:
+    file: data.db
+
+  # ─── HikariCP Connection Pool ────────────────────────────
+  # Shared settings for both MySQL and SQLite.
+  # SQLite ignores maximum-pool-size and minimum-idle (forced to 1).
+  hikari:
+    maximum-pool-size: 10
+    minimum-idle: 2
+    connection-timeout: 30000
+    idle-timeout: 600000
+    max-lifetime: 1800000
