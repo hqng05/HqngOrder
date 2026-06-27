@@ -58,7 +58,9 @@ repositories {
     mavenCentral()
     maven("https://jitpack.io")
     maven("https://repo.tcoded.com/releases")
+    maven("https://repo.rosewooddev.io/repository/public/")
     maven("https://repo.papermc.io/repository/maven-public/")
+    maven("https://repo.codemc.io/repository/creatorfromhell/")
     maven("https://repo.extendedclip.com/content/repositories/placeholderapi/")
 }
 
@@ -67,7 +69,8 @@ dependencies {
     compileOnly("org.slf4j:slf4j-api:2.0.9")
     compileOnly("me.clip:placeholderapi:2.12.2")
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
-    // VaultUnlockedAPI not used — EconomyManager uses VaultAPI 1.7.1 only
+    compileOnly("org.black_ixx:playerpoints:3.3.5")
+    compileOnly("net.milkbowl.vault:VaultUnlockedAPI:2.16")
     implementation("dev.triumphteam:triumph-gui:3.1.13")
     implementation("org.bstats:bstats-bukkit:3.2.1")
     implementation("com.mysql:mysql-connector-j:9.7.0")

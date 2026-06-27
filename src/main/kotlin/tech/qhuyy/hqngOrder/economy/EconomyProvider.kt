@@ -1,0 +1,16 @@
+package tech.qhuyy.hqngOrder.economy
+
+import org.bukkit.OfflinePlayer
+
+interface EconomyProvider {
+
+    fun getBalance(player: OfflinePlayer): Double
+
+    fun hasBalance(player: OfflinePlayer, amount: Double): Boolean
+
+    fun withdraw(player: OfflinePlayer, amount: Double): Boolean
+
+    fun deposit(player: OfflinePlayer, amount: Double): Boolean
+
+    fun formatAmount(amount: Double): String
+}
