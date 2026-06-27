@@ -20,6 +20,7 @@ package tech.qhuyy.hqngOrder
 import com.tcoded.folialib.FoliaLib
 import org.bukkit.plugin.java.JavaPlugin
 import tech.qhuyy.hqngOrder.config.ConfigManager
+import tech.qhuyy.hqngOrder.economy.EconomyManager
 import tech.qhuyy.hqngOrder.message.MessageManager
 import tech.qhuyy.hqngOrder.metrics.MetricsManager
 import tech.qhuyy.hqngOrder.model.Software
@@ -36,6 +37,8 @@ class HqngOrder : JavaPlugin() {
     lateinit var pluginBuildInfo: PluginBuildInfo
         private set
     lateinit var configManager: ConfigManager
+        private set
+    lateinit var economyManager: EconomyManager
         private set
     lateinit var metricsManager: MetricsManager
         private set
@@ -54,6 +57,7 @@ class HqngOrder : JavaPlugin() {
         logSchedulingStatus()
 
         configManager = ConfigManager(this).also { it.init() }
+        economyManager = EconomyManager(this, software).also { it.init() }
         metricsManager = MetricsManager(this, PLUGIN_ID).also { it.start() }
         messageManager = MessageManager(this).also { it.init() }
         miniMessageFormatter = MiniMessageFormatter(messageManager)
@@ -70,7 +74,7 @@ class HqngOrder : JavaPlugin() {
     private fun checkingIfSpigot() {
         if (software == Software.SPIGOT || software == Software.UNKNOWN) {
             logger.severe("═══════════════════════════════════════════════════════════════")
-            logger.severe("HqngOrder requires Paper or Folia to run (including forks).")
+            logger.severe("${getPluginName(false)} requires Paper or Folia to run (including forks).")
             logger.severe("Spigot, non-bukkit and other server software are not supported.")
             logger.severe("Please upgrade to Paper: https://papermc.io/downloads/paper")
             logger.severe("═══════════════════════════════════════════════════════════════")
@@ -84,5 +88,9 @@ class HqngOrder : JavaPlugin() {
         } else {
             logger.info("Running on Paper - standard scheduling enabled")
         }
+    }
+
+    fun JavaPlugin.getPluginName(fancy: Boolean): String {
+        return if (!fancy) pluginMeta.name else "ʜꞯɴɢᴏʀᴅᴇʀ"
     }
 }

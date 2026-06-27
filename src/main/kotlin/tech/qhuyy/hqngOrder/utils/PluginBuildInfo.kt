@@ -41,6 +41,7 @@ class PluginBuildInfo(
                     .toBooleanStrictOrNull() ?: false
             )
         }
+
     }
 
     private fun format(raw: String?): String {
@@ -84,10 +85,6 @@ class PluginBuildInfo(
         "buildTime" to buildTime,
         "isDirty" to isDirty
     )
-
-    fun getPluginName(fancy: Boolean): String {
-        return if (!fancy) plugin.pluginMeta.name else "ʜꞯɴɢᴏʀᴅᴇʀ"
-    }
 
     fun toJson(): String =
         toMap().entries.joinToString(prefix = "{", postfix = "}") { "\"${it.key}\":\"${it.value}\"" }
