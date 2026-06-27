@@ -1,0 +1,11 @@
+# Deliver Items GUI Configuration
+title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Deliver Items ⚊ ⚊ ⚊</gradient:>"
+rows: 3
+items:
+  info:
+    slot: 4
+    material: BOOK
+    name: "<gold>📦 Place Items Here</gold>"
+lore:
+  - "<gray>Place the matching items in this inventory</gray>"
+  - "<gray>Close the inventory when done</gray>"

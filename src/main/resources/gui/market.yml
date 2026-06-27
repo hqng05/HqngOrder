@@ -1,0 +1,71 @@
+# Market GUI Configuration
+title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ ⚊ ⚊ Black Market ⚊ ⚊ ⚊ ⚊ ⚊</gradient:>"
+rows: 6
+items:
+  border:
+    slot: -1
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+  info_book:
+    slot: 4
+    material: BOOK
+    name: "<gradient:#FFD700:#FFA500>📖 Black Market</gradient:>"
+    lore:
+      - "<gray>Browse active buy orders from other players.</gray>"
+      - "<gray>Click an order to deliver items and earn money!</gray>"
+      - ""
+      - "<yellow>Left-click</yellow> <gray>an order to start delivering</gray>"
+  filter_all:
+    slot: 45
+    material: COMPASS
+    name: "<green>🔍 All Categories</green>"
+    lore:
+      - "<gray>Show all available orders</gray>"
+  filter_blocks:
+    slot: 46
+    material: BRICK
+    name: "<aqua>🧱 Blocks</aqua>"
+    lore:
+      - "<gray>Show block orders only</gray>"
+  filter_tools:
+    slot: 47
+    material: DIAMOND_PICKAXE
+    name: "<light_purple>🔧 Tools</light_purple>"
+    lore:
+      - "<gray>Show tool orders only</gray>"
+  filter_combat:
+    slot: 48
+    material: DIAMOND_SWORD
+    name: "<red>⚔️ Combat</red>"
+    lore:
+      - "<gray>Show combat item orders only</gray>"
+  filter_misc:
+    slot: 49
+    material: BREWING_STAND
+    name: "<yellow>🧪 Misc / Potions</yellow>"
+    lore:
+      - "<gray>Show miscellaneous orders only</gray>"
+  your_orders:
+    slot: 50
+    material: WRITABLE_BOOK
+    name: "<gold>📝 Your Orders</gold>"
+    lore:
+      - "<gray>View and manage your own orders</gray>"
+  previous_page:
+    slot: 51
+    material: ARROW
+    name: "<yellow>◀ Previous Page</yellow>"
+    lore:
+      - "<gray>Go to the previous page</gray>"
+  next_page:
+    slot: 52
+    material: ARROW
+    name: "<yellow>Next Page ▶</yellow>"
+    lore:
+      - "<gray>Go to the next page</gray>"
+  admin_panel:
+    slot: 53
+    material: COMMAND_BLOCK
+    name: "<red>⚙️ Admin Panel</red>"
+    lore:
+      - "<gray>Open the admin control panel</gray>"

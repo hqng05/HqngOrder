@@ -33,12 +33,21 @@ class EconomyManager(
         return getBalance(Bukkit.getOfflinePlayer(uuid))
     }
 
+    fun checkAndDeduct(player: OfflinePlayer, amount: Double): Boolean {
+        if (!hasEnough(player, amount)) return false
+        return withdraw(player, amount)
+    }
+
     fun hasEnough(player: OfflinePlayer, amount: Double): Boolean {
         return provider.hasBalance(player, amount)
     }
 
     fun withdraw(player: OfflinePlayer, amount: Double): Boolean {
         return provider.withdraw(player, amount)
+    }
+
+    fun deposit(uuid: UUID, amount: Double): Boolean {
+        return deposit(Bukkit.getOfflinePlayer(uuid), amount)
     }
 
     fun deposit(player: OfflinePlayer, amount: Double): Boolean {

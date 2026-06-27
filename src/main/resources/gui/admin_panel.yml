@@ -1,0 +1,33 @@
+# Admin Panel GUI Configuration
+title: "<gradient:#FF4444:#FF6666>⚊ ⚊ ⚊ Admin Panel ⚊ ⚊ ⚊</gradient:>"
+rows: 6
+items:
+  border:
+    slot: -1
+    material: RED_STAINED_GLASS_PANE
+    name: " "
+  info:
+    slot: 4
+    material: COMMAND_BLOCK
+    name: "<red>⚙️ Admin Panel</red>"
+    lore:
+      - "<gray>View and manage all active orders</gray>"
+      - "<gray>Click an order to force-cancel it</gray>"
+  back:
+    slot: 45
+    material: ARROW
+    name: "<yellow>◀ Back to Market</yellow>"
+    lore:
+      - "<gray>Return to the main market view</gray>"
+  previous_page:
+    slot: 51
+    material: ARROW
+    name: "<yellow>◀ Previous Page</yellow>"
+    lore:
+      - "<gray>Go to the previous page</gray>"
+  next_page:
+    slot: 52
+    material: ARROW
+    name: "<yellow>Next Page ▶</yellow>"
+    lore:
+      - "<gray>Go to the next page</gray>"
