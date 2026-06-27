@@ -7,6 +7,10 @@ folia-supported: true
 authors: [ hqng05 ]
 website: https://qhuyy.tech
 
+libraries:
+  - org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0
+  - com.zaxxer:HikariCP:5.1.0
+
 commands:
   orders:
     description: Main command for HqngOrder - opens the market GUI
