@@ -69,6 +69,7 @@ dependencies {
     compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     // VaultUnlockedAPI not used — EconomyManager uses VaultAPI 1.7.1 only
     implementation("dev.triumphteam:triumph-gui:3.1.13")
+    implementation("org.bstats:bstats-bukkit:3.2.1")
     implementation("com.mysql:mysql-connector-j:9.7.0")
     implementation("com.tcoded:FoliaLib:0.5.1")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
@@ -96,6 +97,7 @@ tasks.shadowJar {
     relocate("com.mysql", "$packageLib.mysql")
     relocate("com.tcoded", "$packageLib.tcoded")
     relocate("com.zaxxer", "$packageLib.zaxxer")
+    relocate("org.bstats", "$packageLib.bstats")
     relocate("dev.triumphteam.gui", "tech.qhuyy.hqngOrder.gui")
     relocate("kotlin", "$packageLib.kotlin") {
         exclude("kotlin/kotlin.kotlin_builtins")

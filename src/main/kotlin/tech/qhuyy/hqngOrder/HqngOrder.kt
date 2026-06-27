@@ -19,10 +19,14 @@ package tech.qhuyy.hqngOrder
 
 import com.tcoded.folialib.FoliaLib
 import org.bukkit.plugin.java.JavaPlugin
+import tech.qhuyy.hqngOrder.config.ConfigManager
 import tech.qhuyy.hqngOrder.message.MessageManager
+import tech.qhuyy.hqngOrder.metrics.MetricsManager
 import tech.qhuyy.hqngOrder.model.Software
 import tech.qhuyy.hqngOrder.utils.MiniMessageFormatter
 import tech.qhuyy.hqngOrder.utils.PluginBuildInfo
+
+private const val PLUGIN_ID = 32162
 
 class HqngOrder : JavaPlugin() {
     lateinit var foliaLib: FoliaLib
@@ -30,6 +34,10 @@ class HqngOrder : JavaPlugin() {
     lateinit var software: Software
         private set
     lateinit var pluginBuildInfo: PluginBuildInfo
+        private set
+    lateinit var configManager: ConfigManager
+        private set
+    lateinit var metricsManager: MetricsManager
         private set
     lateinit var messageManager: MessageManager
         private set
@@ -45,6 +53,8 @@ class HqngOrder : JavaPlugin() {
         pluginBuildInfo = PluginBuildInfo(this)
         logSchedulingStatus()
 
+        configManager = ConfigManager(this).also { it.init() }
+        metricsManager = MetricsManager(this, PLUGIN_ID).also { it.start() }
         messageManager = MessageManager(this).also { it.init() }
         miniMessageFormatter = MiniMessageFormatter(messageManager)
     }
