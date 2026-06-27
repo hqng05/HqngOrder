@@ -5,6 +5,8 @@ import dev.triumphteam.gui.guis.Gui
 import dev.triumphteam.gui.guis.GuiItem
 import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.Tag
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Material
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
@@ -29,21 +31,52 @@ class ItemEditGUI(private val plugin: HqngOrder) {
 
         makeClick("item_edit", "back") { plugin.guiHandler.openItemSelectorGUI(player) }?.let { gui.setItem(10, it) }
 
-        makeClick("item_edit", "select_enchant") { plugin.guiHandler.openEnchantSelectorGUI(player, itemStack) }?.let { gui.setItem(12, it) }
+        makeClick("item_edit", "select_enchant") {
+            plugin.guiHandler.openEnchantSelectorGUI(
+                player,
+                itemStack
+            )
+        }?.let { gui.setItem(12, it) }
 
+        val formatter = plugin.miniMessageFormatter
         val clone = itemStack.clone().apply { amount = 1 }
-        val loreLines: MutableList<Component> = mutableListOf()
-        loreLines.add(miniMessage.deserialize("<gray>Type: <yellow>${itemStack.type.name}</yellow></gray>"))
+        val loreLines: MutableList<net.kyori.adventure.text.Component> = mutableListOf()
+        loreLines.add(
+            formatter.deserializeKey(
+                "gui.item-edit.type-line",
+                TagResolver.resolver(
+                    "item_name",
+                    Tag.inserting(net.kyori.adventure.text.Component.text(itemStack.type.name))
+                )
+            )
+        )
         if (itemStack.enchantments.isNotEmpty()) {
-            loreLines.add(Component.empty())
-            loreLines.add(miniMessage.deserialize("<aqua>Enchantments:</aqua>"))
+            loreLines.add(net.kyori.adventure.text.Component.empty())
+            loreLines.add(formatter.deserializeKey("gui.item-edit.enchantments-header"))
             for ((ench, lvl) in itemStack.enchantments) {
                 val en = ench.key.key.replace("_", " ").replaceFirstChar { it.uppercase() }
-                loreLines.add(miniMessage.deserialize("  <gray>$en ${toRoman(lvl)}</gray>"))
+                loreLines.add(
+                    formatter.deserializeKey(
+                        "gui.item-edit.enchant-line",
+                        TagResolver.resolver("enchant", Tag.inserting(net.kyori.adventure.text.Component.text(en))),
+                        TagResolver.resolver(
+                            "level",
+                            Tag.inserting(net.kyori.adventure.text.Component.text(toRoman(lvl)))
+                        )
+                    )
+                )
             }
         }
         val preview = ItemBuilder.from(clone)
-            .name(miniMessage.deserialize("<gold>👁️ ${itemStack.type.name}</gold>"))
+            .name(
+                formatter.deserializeKey(
+                    "gui.item-edit.preview-name",
+                    TagResolver.resolver(
+                        "item_name",
+                        Tag.inserting(net.kyori.adventure.text.Component.text(itemStack.type.name))
+                    )
+                )
+            )
             .lore(loreLines.toList())
             .asGuiItem { event -> event.isCancelled = true }
         gui.setItem(13, preview)
@@ -65,7 +98,11 @@ class ItemEditGUI(private val plugin: HqngOrder) {
 
     private fun makeItem(screen: String, key: String): GuiItem? {
         val c = plugin.guiConfigManager.getItem(screen, key) ?: return null
-        val m = try { Material.valueOf(c.material.uppercase()) } catch (e: Exception) { Material.STONE }
+        val m = try {
+            Material.valueOf(c.material.uppercase())
+        } catch (e: Exception) {
+            Material.STONE
+        }
         val b = ItemBuilder.from(m).amount(c.amount.coerceIn(1, 64))
         if (c.name != null) b.name(miniMessage.deserialize(c.name))
         if (c.lore != null) b.lore(c.lore.map { miniMessage.deserialize(it) })
@@ -74,7 +111,11 @@ class ItemEditGUI(private val plugin: HqngOrder) {
 
     private fun makeClick(screen: String, key: String, action: () -> Unit): GuiItem? {
         val c = plugin.guiConfigManager.getItem(screen, key) ?: return null
-        val m = try { Material.valueOf(c.material.uppercase()) } catch (e: Exception) { Material.STONE }
+        val m = try {
+            Material.valueOf(c.material.uppercase())
+        } catch (e: Exception) {
+            Material.STONE
+        }
         val b = ItemBuilder.from(m).amount(c.amount.coerceIn(1, 64))
         if (c.name != null) b.name(miniMessage.deserialize(c.name))
         if (c.lore != null) b.lore(c.lore.map { miniMessage.deserialize(it) })

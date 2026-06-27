@@ -5,7 +5,7 @@ import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
 import java.io.DataInputStream
 import java.io.DataOutputStream
-import java.util.Base64
+import java.util.*
 import java.util.logging.Logger
 
 object ItemSerializer {
@@ -16,8 +16,8 @@ object ItemSerializer {
             val bytes = ByteArrayOutputStream().use { baos ->
                 DataOutputStream(baos).use { dos ->
                     dos.writeInt(items.size)
-                    for(item in items) {
-                        if(item == null || item.type.isAir) {
+                    for (item in items) {
+                        if (item == null || item.type.isAir) {
                             dos.writeInt(0)
                         } else {
                             val serialized = item.serializeAsBytes()

@@ -6,7 +6,6 @@ import tech.qhuyy.hqngOrder.economy.providers.VaultProvider
 import tech.qhuyy.hqngOrder.economy.providers.VaultUnlockedProvider
 import tech.qhuyy.hqngOrder.model.Software
 import java.util.logging.Logger
-import kotlin.jvm.Throws
 
 class EconomyRegistry(
     private val plugin: HqngOrder,
@@ -16,11 +15,12 @@ class EconomyRegistry(
     private val preferred: EconomyType = plugin.configManager.getPreferedEconomyProvider()
 
     private val priorityList: List<EconomyType>
-        get() = when(platform) {
+        get() = when (platform) {
             Software.FOLIA -> listOf(
                 EconomyType.VAULT_UNLOCKED,
                 EconomyType.PLAYER_POINTS
             )
+
             else -> listOf(
                 EconomyType.VAULT,
                 EconomyType.VAULT_UNLOCKED,
@@ -29,7 +29,7 @@ class EconomyRegistry(
         }
 
     @Throws(IllegalStateException::class)
-    fun resolve() : EconomyProvider {
+    fun resolve(): EconomyProvider {
         if (isCompatible(preferred)) {
             createProvider(preferred)?.let {
                 logger.info("Using economy provider: $preferred")

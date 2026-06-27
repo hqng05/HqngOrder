@@ -1,7 +1,7 @@
 package tech.qhuyy.hqngOrder.model
 
 import org.bukkit.inventory.ItemStack
-import java.util.UUID
+import java.util.*
 
 data class BuyOrder(
     val id: Int,

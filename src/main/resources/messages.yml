@@ -1,8 +1,10 @@
+# messages.yml — All player-facing messages for HqngOrder. Edit values freely; do not change key names.
+
 # ═══════════════════════════════════════════════════════════════
 # HqngOrder — Default Messages (MiniMessage format)
 # ═══════════════════════════════════════════════════════════════
 
-prefix: "<gradient:#FF6B35:#FFA500>HqngOrder</gradient:>"
+prefix: "<gradient:#FF6B35:#FFA500>HqngOrder</gradient>"
 
 # ─── Command & Permission Messages ────────────────────────────
 no-permission: "<red>❌ You don't have permission to use this command!</red>"
@@ -10,45 +12,124 @@ plugin-reloaded: "<green>✅ Plugin configuration reloaded successfully!</green>
 plugin-enabled: "<green>✅ HqngOrder has been enabled!</green>"
 plugin-disabled: "<green>✅ HqngOrder has been disabled!</green>"
 error: "<red>❌ An error occurred: <error></red>"
+commands:
+  orders:
+    only-players: "<red>Only players can use this command.</red>"
+    reload-failure: "<red>❌ Failed to reload configuration. Check console for details.</red>"
 
 # ─── Chat Input Messages ──────────────────────────────────────
 prompt-enter-amount: "<yellow>Please enter the quantity (positive integer):</yellow>"
-prompt-enter-price: "<yellow>Please enter the price per item (e.g., 10.5):</yellow>"
+
+# RESERVED: old keys, kept for safety; InputListener now uses input.invalid-amount / input.invalid-price
 invalid-amount: "<red>❌ Invalid amount! Please enter a positive integer.</red>"
 invalid-price: "<red>❌ Invalid price! Please enter a positive number.</red>"
-input-cancelled: "<red>❌ Input cancelled.</red>"
+input:
+  blocked-command: "<red>⛔ Complete your current input first!</red>"
+  cancelled: "<red>❌ Input cancelled.</red>"
+  invalid-amount: "<red>❌ Invalid amount! Enter a positive integer.</red>"
+  enter-price: "<yellow>Enter price per item (e.g., 10.5):</yellow>"
+  invalid-price: "<red>❌ Invalid price! Enter a positive number.</red>"
+  not-enough-money: "<red>❌ Not enough money!</red>"
 
 # ─── Order Messages ───────────────────────────────────────────
 order-created: "<green>✅ Order created successfully! ID: <order_id></green>"
 order-cancelled: "<green>✅ Order <order_id> has been cancelled! Refund issued.</green>"
 order-expired: "<red>⏰ Order #<order_id> has expired and been refunded.</red>"
-order-locked: "<red>🔒 This order is currently being delivered by someone else!</red>"
-cannot-deliver-self: "<red>❌ You cannot deliver to yourself!</red>"
+# RESERVED: not-enough-money is used by OrdersManager.createOrder via miniMessageFormatter
 not-enough-money: "<red>❌ You don't have enough money to create this order!</red>"
 admin-cancel-success: "<green>✅ Order <order_id> has been force-cancelled by admin!</green>"
+orders:
+  confirm:
+    not-enough-money: "<red>❌ Not enough money!</red>"
+    failed-to-create: "<red>❌ Failed to create order!</red>"
 
 # ─── Delivery Messages ────────────────────────────────────────
 delivery-success: "<green>✅ Delivery successful! You received <payment></green>"
+# RESERVED: delivery-canceled is used by GUIListener.onInventoryClose
 delivery-cancelled: "<red>❌ Delivery cancelled, order unlocked.</red>"
 delivery-received: "<green>📦 Items delivered to your stash for order #<order_id>!</green>"
 item-mismatch: "<red>❌ This item doesn't match the order requirements!</red>"
+# RESERVED: old key, kept for safety; ConfirmDeliveryGUI now uses delivery.stash-full
 stash-full: "<red>❌ Buyer's stash is full! Cannot complete delivery.</red>"
+delivery:
+  stash-full: "<red>❌ Buyer's stash is full!</red>"
+  cancelled: "<red>❌ Delivery cancelled, items returned</red>"
+  failure: "<red>❌ <reason></red>"
 
 # ─── Stash Messages ──────────────────────────────────────────
-stash-title: "<gradient:#FF6B35:#FFA500>📦 Your Stash</gradient:>"
+stash-title: "<gradient:#FF6B35:#FFA500>📦 Your Stash</gradient>"
 stash-empty: "<gray>📦 Your stash is currently empty.</gray>"
 stash-opened: "<green>✅ Stash has been opened!</green>"
 
 # ─── GUI Titles ──────────────────────────────────────────────
-market-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ ⚊ ⚊ Black Market ⚊ ⚊ ⚊ ⚊ ⚊</gradient:>"
-your-orders-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ ⚊ ⚊ Your Orders ⚊ ⚊ ⚊ ⚊ ⚊</gradient:>"
-item-selector-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Item Selector ⚊ ⚊ ⚊</gradient:>"
-item-edit-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Customize Item ⚊ ⚊ ⚊</gradient:>"
-enchant-selector-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ Select Enchantments ⚊ ⚊</gradient:>"
-confirm-order-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Confirm Order ⚊ ⚊ ⚊</gradient:>"
-delivery-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Deliver Items ⚊ ⚊ ⚊</gradient:>"
-confirm-delivery-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ Confirm Delivery ⚊ ⚊</gradient:>"
-admin-panel-title: "<gradient:#FF4444:#FF6666>⚊ ⚊ ⚊ Admin Panel ⚊ ⚊ ⚊</gradient:>"
+market-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ ⚊ ⚊ Black Market ⚊ ⚊ ⚊ ⚊ ⚊</gradient>"
+your-orders-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ ⚊ ⚊ Your Orders ⚊ ⚊ ⚊ ⚊ ⚊</gradient>"
+item-selector-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Item Selector ⚊ ⚊ ⚊</gradient>"
+item-edit-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Customize Item ⚊ ⚊ ⚊</gradient>"
+enchant-selector-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ Select Enchantments ⚊ ⚊</gradient>"
+confirm-order-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Confirm Order ⚊ ⚊ ⚊</gradient>"
+delivery-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Deliver Items ⚊ ⚊ ⚊</gradient>"
+confirm-delivery-title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ Confirm Delivery ⚊ ⚊</gradient>"
+admin-panel-title: "<gradient:#FF4444:#FF6666>⚊ ⚊ ⚊ Admin Panel ⚊ ⚊ ⚊</gradient>"
+
+# ─── GUI Display Strings ──────────────────────────────────────
+gui:
+  confirm-order:
+    summary-name: "<gold>📦 Order Summary</gold>"
+    item-line: "<gray>Item: <yellow><item_name></yellow></gray>"
+    quantity-line: "<gray>Quantity: <yellow><amount></yellow></gray>"
+    price-line: "<gray>Price per item: <yellow><price></yellow></gray>"
+    total-line: "<gray>Total: <yellow><total></yellow></gray>"
+    balance-line: "<gray>Balance: <yellow><balance></yellow></gray>"
+  confirm-delivery:
+    summary-name: "<gold>📦 Delivery Summary</gold>"
+    to-line: "<gray>To: <yellow><buyer_name></yellow></gray>"
+    item-line: "<gray>Item: <yellow><item_name></yellow></gray>"
+    qty-line: "<gray>Qty: <yellow><delivered></yellow> / <yellow><remaining></yellow></gray>"
+    payment-line: "<gray>Payment: <yellow><payment></yellow></gray>"
+    stash-note: "<gray>Items go to buyer's stash</gray>"
+  deliver-items:
+    info-name: "<gold>📦 Place matching items here</gold>"
+    info-order-line: "<gray>Order: <yellow>#<order_id></yellow></gray>"
+    info-needed-line: "<gray>Needed: <yellow><amount>x <item_name></yellow></gray>"
+    info-close-hint: "<gray>Close inventory when done</gray>"
+  market:
+    seller-line: "<gray>Seller: <yellow><seller_name></yellow></gray>"
+    needed-line: "<gray>Needed: <yellow><amount></yellow></gray>"
+    price-line: "<gray>Price: <yellow><price></yellow> each</gray>"
+    total-line: "<gray>Total: <yellow><total></yellow></gray>"
+    locked-line: "<red>🔒 Being delivered</red>"
+    click-hint: "<gray><italic>Click to deliver</italic></gray>"
+    cannot-deliver-self: "<red>❌ You cannot deliver to yourself!</red>"
+    order-being-delivered: "<red>🔒 This order is being delivered!</red>"
+  item-selector:
+    hand-item-name: "<yellow>✋ <item_name></yellow>"
+    hand-item-lore: "<gray>Click to use</gray>"
+    material-name: "<yellow><material_name></yellow>"
+  item-edit:
+    type-line: "<gray>Type: <yellow><item_name></yellow></gray>"
+    enchantments-header: "<aqua>Enchantments:</aqua>"
+    enchant-line: "  <gray><enchant> <level></gray>"
+    preview-name: "<gold>👁️ <item_name></gold>"
+  enchant-selector:
+    preview-name: "<gold>👁️ <item_name></gold>"
+    current-line: "<gray>Current: <yellow><current></yellow> / <yellow><max></yellow></gray>"
+    max-line: "<gray>Max: <yellow><max></yellow></gray>"
+    click-hint: "<gray><italic>Left ↑ | Right ↓</italic></gray>"
+    enchant-name: "<light_purple><enchant_name></light_purple>"
+  your-orders:
+    status-line: "<gray>Status: <yellow><status></yellow></gray>"
+    amount-line: "<gray>Amount: <yellow><fulfilled>/<needed></yellow></gray>"
+    price-line: "<gray>Price: <yellow><price></yellow> each</gray>"
+    total-line: "<gray>Total: <yellow><total></yellow></gray>"
+    click-cancel: "<red><italic>Click to cancel</italic></red>"
+  admin-panel:
+    id-line: "<gray>ID: <yellow>#<order_id></yellow></gray>"
+    buyer-line: "<gray>Buyer: <yellow><buyer_name></yellow></gray>"
+    amount-line: "<gray>Amount: <yellow><fulfilled>/<needed></yellow></gray>"
+    price-line: "<gray>Price: <yellow><price></yellow> each</gray>"
+    total-line: "<gray>Total: <yellow><total></yellow></gray>"
+    force-cancel: "<red><bold>Click to force-cancel</bold></red>"
 
 # ─── Loading Messages ────────────────────────────────────────
 loading-orders: "<yellow>⏳ Loading orders...</yellow>"

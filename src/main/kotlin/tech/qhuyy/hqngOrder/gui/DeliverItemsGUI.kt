@@ -1,7 +1,8 @@
 package tech.qhuyy.hqngOrder.gui
 
 import dev.triumphteam.gui.builder.item.ItemBuilder
-import net.kyori.adventure.text.minimessage.MiniMessage
+import net.kyori.adventure.text.minimessage.tag.Tag
+import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
@@ -11,20 +12,34 @@ import tech.qhuyy.hqngOrder.model.DeliverySession
 
 class DeliverItemsGUI(private val plugin: HqngOrder) {
 
-    private val miniMessage = MiniMessage.miniMessage()
-
     fun open(player: Player, order: BuyOrder) {
-        val title = plugin.messageManager.getString("delivery-title",
-            "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Deliver Items ⚊ ⚊ ⚊</gradient:>")
+        val title = plugin.messageManager.getMessage("delivery-title")
+        val formatter = plugin.miniMessageFormatter
 
-        val inventory = Bukkit.createInventory(null, 27, miniMessage.deserialize(title))
+        val inventory = Bukkit.createInventory(null, 27, formatter.deserialize(title))
 
         val infoItem = ItemBuilder.from(Material.BOOK)
-            .name(miniMessage.deserialize("<gold>📦 Place matching items here</gold>"))
+            .name(formatter.deserializeKey("gui.deliver-items.info-name"))
             .lore(
-                miniMessage.deserialize("<gray>Order: <yellow>#${order.id}</yellow></gray>"),
-                miniMessage.deserialize("<gray>Needed: <yellow>${order.remainingAmount}x ${order.itemStack.type.name}</yellow></gray>"),
-                miniMessage.deserialize("<gray>Close inventory when done</gray>")
+                formatter.deserializeKey(
+                    "gui.deliver-items.info-order-line",
+                    TagResolver.resolver(
+                        "order_id",
+                        Tag.inserting(net.kyori.adventure.text.Component.text(order.id.toString()))
+                    )
+                ),
+                formatter.deserializeKey(
+                    "gui.deliver-items.info-needed-line",
+                    TagResolver.resolver(
+                        "amount",
+                        Tag.inserting(net.kyori.adventure.text.Component.text(order.remainingAmount))
+                    ),
+                    TagResolver.resolver(
+                        "item_name",
+                        Tag.inserting(net.kyori.adventure.text.Component.text(order.itemStack.type.name))
+                    )
+                ),
+                formatter.deserializeKey("gui.deliver-items.info-close-hint")
             )
             .asGuiItem()
         inventory.setItem(4, infoItem.itemStack)
