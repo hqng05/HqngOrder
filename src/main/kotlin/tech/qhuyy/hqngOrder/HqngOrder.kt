@@ -79,12 +79,12 @@ class HqngOrder : JavaPlugin() {
         logSchedulingStatus()
 
         configManager = ConfigManager(this).also { it.init() }
-        guiConfigManager = GuiConfigManager(this)
+        guiConfigManager = GuiConfigManager(this).also { it.init() }
         economyManager = EconomyManager(this, software).also { it.init() }
         scope = PluginCoroutineScope(this)
         metricsManager = MetricsManager(this, PLUGIN_ID).also { it.start() }
         messageManager = MessageManager(this).also { it.init() }
-        databaseManager = DatabaseManager(this, configManager). also { it.init() }
+        databaseManager = DatabaseManager(this, configManager).also { it.init() }
         miniMessageFormatter = MiniMessageFormatter(messageManager)
         stashManager = StashManager(this)
         ordersManager = OrdersManager(this).also { it.init() }
@@ -97,9 +97,9 @@ class HqngOrder : JavaPlugin() {
     }
 
     override fun onDisable() {
-        if(::ordersManager.isInitialized) ordersManager.shutdown()
-        if(::scope.isInitialized) scope.cancel()
-        if(databaseManager.isInitialized) databaseManager.close()
+        if (::ordersManager.isInitialized) ordersManager.shutdown()
+        if (::scope.isInitialized) scope.cancel()
+        if (::databaseManager.isInitialized && databaseManager.isInitialized) databaseManager.close()
     }
 
     private fun registerCommand() {

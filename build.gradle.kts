@@ -131,8 +131,9 @@ tasks {
 
     processResources {
         dependsOn(generateGitProperties)
-        val props = mapOf("" +
-                "version" to version,
+        val props = mapOf(
+            "" +
+                    "version" to version,
             "gitCommit" to gitCommitShort
         )
         filesMatching("plugin.yml") {

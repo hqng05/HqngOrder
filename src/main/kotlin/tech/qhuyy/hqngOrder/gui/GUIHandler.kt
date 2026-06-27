@@ -5,12 +5,13 @@ import org.bukkit.inventory.ItemStack
 import tech.qhuyy.hqngOrder.HqngOrder
 import tech.qhuyy.hqngOrder.model.BuyOrder
 import tech.qhuyy.hqngOrder.model.DeliverySession
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class GUIHandler(private val plugin: HqngOrder) {
 
     private val activeDeliverySessions = ConcurrentHashMap<UUID, DeliverySession>()
+    private val playerCategories = ConcurrentHashMap<UUID, String>()
 
     fun addDeliverySession(playerUuid: UUID, session: DeliverySession) {
         activeDeliverySessions[playerUuid] = session
@@ -22,6 +23,15 @@ class GUIHandler(private val plugin: HqngOrder) {
 
     fun removeDeliverySession(playerUuid: UUID) {
         activeDeliverySessions.remove(playerUuid)
+    }
+
+    fun getCategory(playerUuid: UUID): String = playerCategories[playerUuid] ?: "all"
+    fun setCategory(playerUuid: UUID, category: String) {
+        playerCategories[playerUuid] = category
+    }
+
+    fun removeCategory(playerUuid: UUID) {
+        playerCategories.remove(playerUuid)
     }
 
     fun openMarketGUI(player: Player) {

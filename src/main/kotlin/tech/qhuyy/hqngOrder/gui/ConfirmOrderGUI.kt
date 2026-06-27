@@ -3,7 +3,6 @@ package tech.qhuyy.hqngOrder.gui
 import dev.triumphteam.gui.builder.item.ItemBuilder
 import dev.triumphteam.gui.guis.Gui
 import dev.triumphteam.gui.guis.GuiItem
-import net.kyori.adventure.text.Component
 import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
@@ -30,31 +29,68 @@ class ConfirmOrderGUI(private val plugin: HqngOrder) {
 
         makeClick("confirm_order", "confirm") {
             if (!economy.hasEnough(player, totalCost)) {
-                player.sendMessage(miniMessage.deserialize("<red>❌ Not enough money!</red>"))
+                plugin.miniMessageFormatter.sendMessage(player, "orders.confirm.not-enough-money")
                 return@makeClick
             }
             val order = plugin.ordersManager.createOrder(player, itemStack, amount, price)
             if (order != null) {
-                plugin.miniMessageFormatter.sendMessage(player, "order-created",
-                    TagResolver.resolver("order_id", Tag.inserting(Component.text(order.id.toString()))))
+                plugin.miniMessageFormatter.sendMessage(
+                    player, "order-created",
+                    TagResolver.resolver(
+                        "order_id",
+                        Tag.inserting(net.kyori.adventure.text.Component.text(order.id.toString()))
+                    )
+                )
+                player.closeInventory()
+                plugin.foliaLib.scheduler.runNextTick { plugin.guiHandler.openMarketGUI(player) }
+            } else {
+                plugin.miniMessageFormatter.sendMessage(player, "orders.confirm.failed-to-create")
             }
-            player.closeInventory()
-            plugin.foliaLib.scheduler.runNextTick { plugin.guiHandler.openMarketGUI(player) }
         }?.let { gui.setItem(11, it) }
 
         val previewItem = itemStack.clone().apply { this.amount = amount.coerceIn(1, maxStackSize) }
         val balance = economy.formatAmount(economy.getBalance(player))
-        val preLore = mutableListOf<Component>()
-        preLore.add(miniMessage.deserialize("<gray>Item: <yellow>${itemStack.type.name}</yellow></gray>"))
-        preLore.add(miniMessage.deserialize("<gray>Quantity: <yellow>$amount</yellow></gray>"))
-        preLore.add(miniMessage.deserialize("<gray>Price per item: <yellow>$priceFormatted</yellow></gray>"))
-        preLore.add(miniMessage.deserialize("<gray>Total: <yellow>$totalFormatted</yellow></gray>"))
-        preLore.add(Component.empty())
-        preLore.add(miniMessage.deserialize("<gray>Balance: <yellow>$balance</yellow></gray>"))
-        gui.setItem(13, ItemBuilder.from(previewItem)
-            .name(miniMessage.deserialize("<gold>📦 Order Summary</gold>"))
-            .lore(preLore.toList())
-            .asGuiItem { event -> event.isCancelled = true })
+        val formatter = plugin.miniMessageFormatter
+        val preLore = mutableListOf<net.kyori.adventure.text.Component>()
+        preLore.add(
+            formatter.deserializeKey(
+                "gui.confirm-order.item-line",
+                TagResolver.resolver(
+                    "item_name",
+                    Tag.inserting(net.kyori.adventure.text.Component.text(itemStack.type.name))
+                )
+            )
+        )
+        preLore.add(
+            formatter.deserializeKey(
+                "gui.confirm-order.quantity-line",
+                TagResolver.resolver("amount", Tag.inserting(net.kyori.adventure.text.Component.text(amount)))
+            )
+        )
+        preLore.add(
+            formatter.deserializeKey(
+                "gui.confirm-order.price-line",
+                TagResolver.resolver("price", Tag.inserting(net.kyori.adventure.text.Component.text(priceFormatted)))
+            )
+        )
+        preLore.add(
+            formatter.deserializeKey(
+                "gui.confirm-order.total-line",
+                TagResolver.resolver("total", Tag.inserting(net.kyori.adventure.text.Component.text(totalFormatted)))
+            )
+        )
+        preLore.add(net.kyori.adventure.text.Component.empty())
+        preLore.add(
+            formatter.deserializeKey(
+                "gui.confirm-order.balance-line",
+                TagResolver.resolver("balance", Tag.inserting(net.kyori.adventure.text.Component.text(balance)))
+            )
+        )
+        gui.setItem(
+            13, ItemBuilder.from(previewItem)
+                .name(formatter.deserializeKey("gui.confirm-order.summary-name"))
+                .lore(preLore.toList())
+                .asGuiItem { event -> event.isCancelled = true })
 
         makeClick("confirm_order", "cancel") {
             player.closeInventory()
@@ -66,7 +102,12 @@ class ConfirmOrderGUI(private val plugin: HqngOrder) {
 
     private fun makeItem(screen: String, key: String): GuiItem? {
         val c = plugin.guiConfigManager.getItem(screen, key) ?: return null
-        val m = try { Material.valueOf(c.material.uppercase()) } catch (e: Exception) { Material.STONE }
+        val m = try {
+            Material.valueOf(c.material.uppercase())
+        } catch (e: Exception) {
+            plugin.logger.warning("Invalid material '${c.material}' in $screen.$key, falling back to STONE")
+            Material.STONE
+        }
         val b = ItemBuilder.from(m).amount(c.amount.coerceIn(1, 64))
         if (c.name != null) b.name(miniMessage.deserialize(c.name))
         if (c.lore != null) b.lore(c.lore.map { miniMessage.deserialize(it) })
@@ -75,7 +116,12 @@ class ConfirmOrderGUI(private val plugin: HqngOrder) {
 
     private fun makeClick(screen: String, key: String, action: () -> Unit): GuiItem? {
         val c = plugin.guiConfigManager.getItem(screen, key) ?: return null
-        val m = try { Material.valueOf(c.material.uppercase()) } catch (e: Exception) { Material.STONE }
+        val m = try {
+            Material.valueOf(c.material.uppercase())
+        } catch (e: Exception) {
+            plugin.logger.warning("Invalid material '${c.material}' in $screen.$key, falling back to STONE")
+            Material.STONE
+        }
         val b = ItemBuilder.from(m).amount(c.amount.coerceIn(1, 64))
         if (c.name != null) b.name(miniMessage.deserialize(c.name))
         if (c.lore != null) b.lore(c.lore.map { miniMessage.deserialize(it) })

@@ -4,7 +4,7 @@ import tech.qhuyy.hqngOrder.HqngOrder
 import java.time.Instant
 import java.time.ZoneId
 import java.time.format.DateTimeFormatter
-import java.util.Properties
+import java.util.*
 
 class PluginBuildInfo(
     private val plugin: HqngOrder

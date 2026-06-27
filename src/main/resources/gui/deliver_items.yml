@@ -6,6 +6,6 @@ items:
     slot: 4
     material: BOOK
     name: "<gold>📦 Place Items Here</gold>"
-lore:
-  - "<gray>Place the matching items in this inventory</gray>"
-  - "<gray>Close the inventory when done</gray>"
+    lore:
+      - "<gray>Place the matching items in this inventory</gray>"
+      - "<gray>Close the inventory when done</gray>"

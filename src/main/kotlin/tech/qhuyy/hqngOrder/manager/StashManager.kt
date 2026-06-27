@@ -21,8 +21,7 @@ class StashManager(private val plugin: HqngOrder) {
             val stash = databaseManager.loadStash(player.uniqueId)
 
             plugin.foliaLib.scheduler.runNextTick {
-                val title = plugin.messageManager.getString("stash-title",
-                    "<gradient:#FF6B35:#FFA500>📦 Your Stash</gradient:>")
+                val title = plugin.messageManager.getMessage("stash-title")
 
                 val inventory = Bukkit.createInventory(null, 54, miniMessage.deserialize(title))
 

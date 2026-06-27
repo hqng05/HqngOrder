@@ -6,3 +6,18 @@ load: STARTUP
 folia-supported: true
 authors: [ hqng05 ]
 website: https://qhuyy.tech
+
+commands:
+  orders:
+    description: Main command for HqngOrder - opens the market GUI
+    usage: /<command> [admin|reload]
+    permission: hqngorder.use
+    aliases: [ order, hqngo, horder ]
+
+permissions:
+  hqngorder.use:
+    description: Allows the player to use the /orders command and access the market
+    default: true
+  hqngorder.admin:
+    description: Grants access to admin commands (/orders admin, /orders reload) and the admin panel
+    default: op

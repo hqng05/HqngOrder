@@ -1,6 +1,5 @@
 package tech.qhuyy.hqngOrder.command
 
-import net.kyori.adventure.text.minimessage.MiniMessage
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -14,12 +13,10 @@ class OrdersCommand(
     private val formatter: MiniMessageFormatter
 ) : CommandExecutor, TabCompleter {
 
-    private val miniMessage = MiniMessage.miniMessage()
-
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<String>): Boolean {
 
         if (sender !is Player) {
-            sender.sendMessage(miniMessage.deserialize("<red>Only players can use this command.</red>"))
+            formatter.sendMessage(sender, "commands.orders.only-players")
             return true
         }
 
@@ -35,6 +32,7 @@ class OrdersCommand(
 
                 plugin.guiHandler.openMarketGUI(player)
             }
+
             args[0].equals("admin", ignoreCase = true) -> {
 
                 if (!player.hasPermission("hqngorder.admin")) {
@@ -43,6 +41,7 @@ class OrdersCommand(
                 }
                 plugin.guiHandler.openAdminPanelGUI(player)
             }
+
             args[0].equals("reload", ignoreCase = true) -> {
 
                 if (!player.hasPermission("hqngorder.admin")) {
@@ -51,6 +50,7 @@ class OrdersCommand(
                 }
                 reloadPlugin(player)
             }
+
             else -> {
 
                 plugin.guiHandler.openMarketGUI(player)
@@ -83,7 +83,7 @@ class OrdersCommand(
             formatter.sendMessage(player, "plugin-reloaded")
         } catch (e: Exception) {
             plugin.logger.severe("Failed to reload configuration: ${e.message}")
-            player.sendMessage(miniMessage.deserialize("<red>❌ Failed to reload configuration. Check console for details.</red>"))
+            formatter.sendMessage(player, "commands.orders.reload-failure")
         }
     }
 }

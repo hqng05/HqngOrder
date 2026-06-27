@@ -5,16 +5,11 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.EventPriority
 import org.bukkit.event.Listener
-import org.bukkit.event.player.AsyncPlayerChatEvent
-import org.bukkit.event.player.PlayerCommandPreprocessEvent
-import org.bukkit.event.player.PlayerDropItemEvent
-import org.bukkit.event.player.PlayerInteractEvent
-import org.bukkit.event.player.PlayerMoveEvent
-import org.bukkit.event.player.PlayerQuitEvent
+import org.bukkit.event.player.*
 import org.bukkit.inventory.ItemStack
 import tech.qhuyy.hqngOrder.HqngOrder
 import tech.qhuyy.hqngOrder.gui.GUIHandler
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.ConcurrentHashMap
 
 class InputListener(
@@ -24,32 +19,43 @@ class InputListener(
 
     private val activeSessions = ConcurrentHashMap<UUID, PlayerInputSession>()
     private val miniMessage = MiniMessage.miniMessage()
+    private val formatter get() = plugin.miniMessageFormatter
 
     fun startSession(player: Player, itemStack: ItemStack) {
         val session = PlayerInputSession(player = player, itemStack = itemStack, state = InputState.AWAITING_AMOUNT)
         activeSessions[player.uniqueId] = session
-        val prompt = plugin.messageManager.getString("prompt-enter-amount", "<yellow>Enter quantity (positive integer):")
+        val prompt = plugin.messageManager.getMessage("prompt-enter-amount")
         player.sendMessage(miniMessage.deserialize(prompt))
         player.closeInventory()
     }
 
     fun hasSession(player: Player): Boolean = activeSessions.containsKey(player.uniqueId)
-    fun removeSession(player: Player) { removeSession(player.uniqueId) }
-    fun removeSession(uuid: UUID) { activeSessions.remove(uuid) }
+    fun removeSession(player: Player) {
+        removeSession(player.uniqueId)
+    }
+
+    fun removeSession(uuid: UUID) {
+        activeSessions.remove(uuid)
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerMove(event: PlayerMoveEvent) {
         if (hasSession(event.player)) {
-            val from = event.from; val to = event.to
+            val from = event.from;
+            val to = event.to
             if (from.blockX != to.blockX || from.blockZ != to.blockZ) event.isCancelled = true
         }
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    fun onPlayerDropItem(event: PlayerDropItemEvent) { if (hasSession(event.player)) event.isCancelled = true }
+    fun onPlayerDropItem(event: PlayerDropItemEvent) {
+        if (hasSession(event.player)) event.isCancelled = true
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
-    fun onPlayerInteract(event: PlayerInteractEvent) { if (hasSession(event.player)) event.isCancelled = true }
+    fun onPlayerInteract(event: PlayerInteractEvent) {
+        if (hasSession(event.player)) event.isCancelled = true
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun onInventoryOpen(event: org.bukkit.event.inventory.InventoryOpenEvent) {
@@ -62,12 +68,14 @@ class InputListener(
     fun onPlayerCommand(event: PlayerCommandPreprocessEvent) {
         if (hasSession(event.player)) {
             event.isCancelled = true
-            event.player.sendMessage(miniMessage.deserialize("<red>⛔ Complete your current input first!</red>"))
+            event.player.sendMessage(formatter.deserializeKey("input.blocked-command"))
         }
     }
 
     @EventHandler(priority = EventPriority.MONITOR)
-    fun onPlayerQuit(event: PlayerQuitEvent) { removeSession(event.player) }
+    fun onPlayerQuit(event: PlayerQuitEvent) {
+        removeSession(event.player)
+    }
 
     @EventHandler(priority = EventPriority.LOWEST)
     fun onPlayerChat(event: AsyncPlayerChatEvent) {
@@ -78,7 +86,7 @@ class InputListener(
 
         if (msg.equals("cancel", ignoreCase = true) || msg.equals("exit", ignoreCase = true)) {
             removeSession(player)
-            player.sendMessage(miniMessage.deserialize("<red>❌ Input cancelled.</red>"))
+            player.sendMessage(formatter.deserializeKey("input.cancelled"))
             return
         }
 
@@ -86,29 +94,31 @@ class InputListener(
             InputState.AWAITING_AMOUNT -> {
                 val amount = msg.toIntOrNull()
                 if (amount == null || amount <= 0) {
-                    player.sendMessage(miniMessage.deserialize("<red>❌ Invalid amount! Enter a positive integer.</red>"))
+                    player.sendMessage(formatter.deserializeKey("input.invalid-amount"))
                     return
                 }
                 session.amount = amount
                 session.state = InputState.AWAITING_PRICE
-                player.sendMessage(miniMessage.deserialize("<yellow>Enter price per item (e.g., 10.5):</yellow>"))
+                player.sendMessage(formatter.deserializeKey("input.enter-price"))
             }
+
             InputState.AWAITING_PRICE -> {
                 val price = msg.toDoubleOrNull()
                 if (price == null || price <= 0) {
-                    player.sendMessage(miniMessage.deserialize("<red>❌ Invalid price! Enter a positive number.</red>"))
+                    player.sendMessage(formatter.deserializeKey("input.invalid-price"))
                     return
                 }
                 session.price = price
                 val totalCost = session.amount * session.price
-                if (!plugin.economyManager.hasEnough(player, totalCost)) {
-                    player.sendMessage(miniMessage.deserialize("<red>❌ Not enough money!</red>"))
-                    removeSession(player)
-                    return
-                }
+                val itemStack = session.itemStack
+                val amount = session.amount
                 removeSession(player)
                 plugin.foliaLib.scheduler.runNextTick {
-                    guiHandler.openConfirmOrderGUI(player, session.itemStack, session.amount, session.price)
+                    if (!plugin.economyManager.hasEnough(player, totalCost)) {
+                        player.sendMessage(formatter.deserializeKey("input.not-enough-money"))
+                        return@runNextTick
+                    }
+                    guiHandler.openConfirmOrderGUI(player, itemStack, amount, price)
                 }
             }
         }

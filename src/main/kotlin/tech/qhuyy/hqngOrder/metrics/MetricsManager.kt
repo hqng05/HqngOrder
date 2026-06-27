@@ -1,8 +1,6 @@
 package tech.qhuyy.hqngOrder.metrics
 
 import org.bstats.bukkit.Metrics
-import org.bstats.charts.SimplePie
-import org.bukkit.Bukkit
 import tech.qhuyy.hqngOrder.HqngOrder
 import java.util.concurrent.atomic.AtomicBoolean
 

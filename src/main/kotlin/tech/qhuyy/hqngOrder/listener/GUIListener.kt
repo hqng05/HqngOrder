@@ -23,16 +23,23 @@ class GUIListener(
 
             val clickedInv = event.clickedInventory
             val topInv = player.openInventory.topInventory
+            val orderItem = deliverySession.order.itemStack
 
             if (clickedInv != null && clickedInv == topInv) {
                 val item = event.currentItem
                 if (item != null && !item.type.isAir) {
-
-                    val orderItem = deliverySession.order.itemStack
                     if (item.type != orderItem.type) {
                         event.isCancelled = true
                         player.sendMessage(plugin.miniMessageFormatter.deserializeKey("item-mismatch"))
                     }
+                }
+            }
+
+            if (event.isShiftClick && clickedInv != null && clickedInv != topInv) {
+                val item = event.currentItem
+                if (item != null && !item.type.isAir && item.type != orderItem.type) {
+                    event.isCancelled = true
+                    player.sendMessage(plugin.miniMessageFormatter.deserializeKey("item-mismatch"))
                 }
             }
             return

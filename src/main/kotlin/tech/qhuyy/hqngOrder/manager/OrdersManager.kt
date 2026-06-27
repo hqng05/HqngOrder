@@ -12,7 +12,7 @@ import tech.qhuyy.hqngOrder.enums.OrderStatus
 import tech.qhuyy.hqngOrder.model.BuyOrder
 import tech.qhuyy.hqngOrder.model.DeliverySession
 import tech.qhuyy.hqngOrder.utils.ItemSerializer
-import java.util.UUID
+import java.util.*
 import java.util.concurrent.CopyOnWriteArrayList
 
 class OrdersManager(private val plugin: HqngOrder) {
@@ -187,14 +187,16 @@ class OrdersManager(private val plugin: HqngOrder) {
         val actualDelivered = minOf(totalDelivered, remainingNeeded)
         val payment = actualDelivered * order.pricePerItem
 
-        order.amountFulfilled += actualDelivered
-
         val stash = databaseManager.loadStash(order.buyerUuid).toMutableList()
-        val itemsForStash = itemsToDeliver.flatMap { item ->
-            val count = minOf(item.amount, remainingNeeded)
+        val itemsForStash = mutableListOf<ItemStack>()
+        var remaining = actualDelivered
+        for (item in itemsToDeliver) {
+            if (remaining <= 0) break
+            val count = minOf(item.amount, remaining)
             val clone = item.clone()
             clone.amount = count
-            listOf(clone)
+            itemsForStash.add(clone)
+            remaining -= count
         }
 
         var stashFull = false
@@ -208,6 +210,8 @@ class OrdersManager(private val plugin: HqngOrder) {
             unlockOrder(order)
             return DeliveryResult.stash_full
         }
+
+        order.amountFulfilled += actualDelivered
 
         databaseManager.saveStash(order.buyerUuid, stash.toTypedArray())
 
@@ -238,15 +242,22 @@ class OrdersManager(private val plugin: HqngOrder) {
         val buyer = plugin.server.getPlayer(order.buyerUuid)
         if (buyer != null && buyer.isOnline) {
             val resolver = TagResolver.resolver(
-                TagResolver.resolver("order_id", Tag.inserting(net.kyori.adventure.text.Component.text(order.id.toString()))),
-                TagResolver.resolver("amount", Tag.inserting(net.kyori.adventure.text.Component.text(actualDelivered.toString()))),
+                TagResolver.resolver(
+                    "order_id",
+                    Tag.inserting(net.kyori.adventure.text.Component.text(order.id.toString()))
+                ),
+                TagResolver.resolver(
+                    "amount",
+                    Tag.inserting(net.kyori.adventure.text.Component.text(actualDelivered.toString()))
+                ),
                 TagResolver.resolver("seller", Tag.inserting(net.kyori.adventure.text.Component.text(seller.name)))
             )
-            buyer.sendMessage(miniMessage.deserialize(
-                plugin.messageManager.getString("delivery-received",
-                    "<green>📦 Items delivered to your stash for order #<order_id>!"),
-                resolver
-            ))
+            buyer.sendMessage(
+                miniMessage.deserialize(
+                    plugin.messageManager.getMessage("delivery-received"),
+                    resolver
+                )
+            )
         }
 
         return DeliveryResult.SUCCESS(payment, actualDelivered)
@@ -290,11 +301,12 @@ class OrdersManager(private val plugin: HqngOrder) {
             val resolver = TagResolver.resolver(
                 "order_id", Tag.inserting(Component.text(order.id.toString()))
             )
-            buyer.sendMessage(miniMessage.deserialize(
-                plugin.messageManager.getString("order-expired",
-                    "<red>⏰ Order #<order_id> has expired and been refunded.</red>"),
-                resolver
-            ))
+            buyer.sendMessage(
+                miniMessage.deserialize(
+                    plugin.messageManager.getMessage("order-expired"),
+                    resolver
+                )
+            )
         }
     }
 
