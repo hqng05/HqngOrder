@@ -1,0 +1,38 @@
+# Item Edit GUI Configuration
+title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Customize Item ⚊ ⚊ ⚊</gradient:>"
+rows: 3
+items:
+  border:
+    slot: -1
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+  back:
+    slot: 10
+    material: ARROW
+    name: "<yellow>◀ Back</yellow>"
+    lore:
+      - "<gray>Return to item selector</gray>"
+  select_enchant:
+    slot: 12
+    material: ENCHANTED_BOOK
+    name: "<light_purple>✨ Select Enchantments</light_purple>"
+    lore:
+      - "<gray>Add or remove enchantments on this item</gray>"
+  preview_item:
+    slot: 13
+    material: PAPER
+    name: "<gold>👁️ Item Preview</gold>"
+    lore:
+      - "<gray>This is the item you're ordering</gray>"
+  clear_enchant:
+    slot: 14
+    material: BARRIER
+    name: "<red>🗑️ Clear Enchantments</red>"
+    lore:
+      - "<gray>Remove all enchantments from this item</gray>"
+  confirm_item:
+    slot: 16
+    material: LIME_DYE
+    name: "<green>✅ Confirm Item</green>"
+    lore:
+      - "<gray>Proceed to set price and quantity</gray>"

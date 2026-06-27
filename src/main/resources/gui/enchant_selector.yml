@@ -1,0 +1,18 @@
+# Enchant Selector GUI Configuration
+title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ Select Enchantments ⚊ ⚊</gradient:>"
+rows: 6
+items:
+  border:
+    slot: -1
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+  preview_item:
+    slot: 4
+    material: PAPER
+    name: "<gold>👁️ Item Preview</gold>"
+  save:
+    slot: 45
+    material: LIME_DYE
+    name: "<green>✅ Save & Return</green>"
+    lore:
+      - "<gray>Save enchantments and go back</gray>"

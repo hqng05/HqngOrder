@@ -1,0 +1,48 @@
+# Item Selector GUI Configuration
+title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ ⚊ Item Selector ⚊ ⚊ ⚊</gradient:>"
+rows: 6
+items:
+  border:
+    slot: -1
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+  hand_item:
+    slot: 4
+    material: PLAYER_HEAD
+    name: "<yellow>✋ Item in Hand</yellow>"
+    lore:
+      - "<gray>Use the item you're currently holding</gray>"
+  back:
+    slot: 45
+    material: ARROW
+    name: "<yellow>◀ Back</yellow>"
+    lore:
+      - "<gray>Return to your orders</gray>"
+  filter_all:
+    slot: 46
+    material: COMPASS
+    name: "<green>🔍 All</green>"
+  filter_blocks:
+    slot: 47
+    material: BRICK
+    name: "<aqua>🧱 Blocks</aqua>"
+  filter_tools:
+    slot: 48
+    material: DIAMOND_PICKAXE
+    name: "<light_purple>🔧 Tools</light_purple>"
+  filter_combat:
+    slot: 49
+    material: DIAMOND_SWORD
+    name: "<red>⚔️ Combat</red>"
+  filter_misc:
+    slot: 50
+    material: BREWING_STAND
+    name: "<yellow>🧪 Misc</yellow>"
+  previous_page:
+    slot: 51
+    material: ARROW
+    name: "<yellow>◀ Previous</yellow>"
+  next_page:
+    slot: 52
+    material: ARROW
+    name: "<yellow>Next ▶</yellow>"

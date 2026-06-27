@@ -1,0 +1,30 @@
+# Confirm Delivery GUI Configuration
+title: "<gradient:#FF6B35:#FFA500>⚊ ⚊ Confirm Delivery ⚊ ⚊</gradient:>"
+rows: 3
+items:
+  border:
+    slot: -1
+    material: BLACK_STAINED_GLASS_PANE
+    name: " "
+  confirm:
+    slot: 11
+    material: LIME_STAINED_GLASS_PANE
+    name: "<green>✅ Confirm Delivery</green>"
+    lore:
+      - "<gray>Complete this delivery</gray>"
+      - "<gray>You will receive <total_payment></gray>"
+  summary:
+    slot: 13
+    material: PAPER
+    name: "<gold>📦 Delivery Summary</gold>"
+    lore:
+      - "<gray>Delivering to: <buyer_name></gray>"
+      - "<gray>Item: <item_name></gray>"
+      - "<gray>Quantity: <amount></gray>"
+      - "<gray>Payment: <total_payment></gray>"
+  cancel:
+    slot: 15
+    material: RED_STAINED_GLASS_PANE
+    name: "<red>❌ Cancel Delivery</red>"
+    lore:
+      - "<gray>Cancel and return items</gray>"
