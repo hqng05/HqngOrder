@@ -33,6 +33,7 @@ database:
     idle-timeout: 600000
     max-lifetime: 1800000
 
+# Available provider: VAULT, VAULT_UNLOCKED, PLAYER_POINTS
 economy:
   provider: VAULT
 

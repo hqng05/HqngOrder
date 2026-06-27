@@ -1,5 +1,7 @@
 package tech.qhuyy.hqngOrder.economy
 
+import kotlin.enums.enumEntries
+
 enum class EconomyType {
     VAULT,
     VAULT_UNLOCKED,
@@ -7,15 +9,17 @@ enum class EconomyType {
 
     companion object {
         fun fromString(value: String?): EconomyType {
-            val normalized = value?.trim()?.uppercase()?.replace(" ", "_") ?: ""
-            return when (normalized) {
-                "VAULTUNLOCKED" -> VAULT_UNLOCKED
-                else -> try {
-                    valueOf(normalized)
-                } catch (_: IllegalArgumentException) {
-                    VAULT
-                }
-            }
+            if (value.isNullOrBlank()) return VAULT
+
+            val normalized = value
+                .trim()
+                .uppercase()
+                .replace(Regex("[ _.-]"), "_")
+
+            if (normalized == "VAULTUNLOCKED") return VAULT_UNLOCKED
+
+            return enumEntries<EconomyType>().find { it.name == normalized }
+                ?: VAULT
         }
     }
 }

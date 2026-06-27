@@ -2,6 +2,7 @@ package tech.qhuyy.hqngOrder.config
 
 import org.bukkit.configuration.file.FileConfiguration
 import tech.qhuyy.hqngOrder.HqngOrder
+import tech.qhuyy.hqngOrder.economy.EconomyType
 import java.util.logging.Level
 
 class ConfigManager(private val plugin: HqngOrder) {
@@ -11,13 +12,15 @@ class ConfigManager(private val plugin: HqngOrder) {
     fun init() {
         plugin.saveDefaultConfig()
         reload()
-        plugin.logger.info("ConfigManager initialized successfully")
     }
 
     fun reload() {
         plugin.reloadConfig()
         config = plugin.config
-        plugin.logger.info("Configuration reloaded from disk")
+    }
+
+    fun getPreferedEconomyProvider(): EconomyType {
+        return EconomyType.fromString(config.getString("economy.provider"))
     }
 
     fun getDatabaseType(): DatabaseType {
