@@ -65,27 +65,33 @@ repositories {
 }
 
 dependencies {
-    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
+    // ──────────────────────────────────────
+    //  CompileOnly dependencies
+    // ──────────────────────────────────────
     compileOnly("org.slf4j:slf4j-api:2.0.9")
     compileOnly("me.clip:placeholderapi:2.12.2")
-    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("org.black_ixx:playerpoints:3.3.5")
+    compileOnly("com.github.MilkBowl:VaultAPI:1.7.1")
     compileOnly("net.milkbowl.vault:VaultUnlockedAPI:2.16")
-    implementation("dev.triumphteam:triumph-gui:3.1.13")
+    compileOnly("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
+
+    // ──────────────────────────────────────
+    //  Implementation dependencies
+    // ──────────────────────────────────────
+    implementation("com.tcoded:FoliaLib:0.5.1")
+    implementation("com.zaxxer:HikariCP:5.1.0")
     implementation("org.bstats:bstats-bukkit:3.2.1")
     implementation("com.mysql:mysql-connector-j:9.7.0")
-    implementation("com.tcoded:FoliaLib:0.5.1")
+    implementation("dev.triumphteam:triumph-gui:3.1.13")
     implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.11.0")
-    implementation("com.zaxxer:HikariCP:5.1.0")
 
     // ──────────────────────────────────────
     //  Test dependencies
     // ──────────────────────────────────────
-    testImplementation("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
     testImplementation("org.junit.jupiter:junit-jupiter:5.11.4")
     testImplementation("org.jetbrains.kotlin:kotlin-test:2.3.21")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2")
+    testImplementation("io.papermc.paper:paper-api:1.21.8-R0.1-SNAPSHOT")
 }
 
 kotlin {
