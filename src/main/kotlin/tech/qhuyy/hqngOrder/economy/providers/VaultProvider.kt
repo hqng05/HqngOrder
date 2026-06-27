@@ -23,6 +23,10 @@ class VaultProvider(
 
     override fun formatAmount(amount: Double): String = economy.format(amount)
 
+    override fun currencyNamePlural(): String = economy.currencyNamePlural()
+
+    override fun currencyNameSingular(): String = economy.currencyNameSingular()
+
     companion object {
         fun create(): VaultProvider? {
             val pm = Bukkit.getPluginManager()

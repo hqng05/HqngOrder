@@ -8,7 +8,7 @@ import tech.qhuyy.hqngOrder.economy.EconomyProvider
 class VaultUnlockedProvider(
     private val economy: Economy
 ) : EconomyProvider {
-    private val pluginName = "InsureInv"
+    private val pluginName = "HqngOrder"
 
     override fun getBalance(player: OfflinePlayer): Double =
         economy.getBalance(pluginName, player.uniqueId).toDouble()
@@ -25,6 +25,10 @@ class VaultUnlockedProvider(
     }
 
     override fun formatAmount(amount: Double): String = economy.format(amount.toBigDecimal())
+
+    override fun currencyNamePlural(): String = economy.defaultCurrencyNamePlural(pluginName)
+
+    override fun currencyNameSingular(): String = economy.defaultCurrencyNameSingular(pluginName)
 
     companion object {
         fun create(): VaultUnlockedProvider? {

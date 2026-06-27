@@ -6,6 +6,7 @@ import tech.qhuyy.hqngOrder.economy.providers.VaultProvider
 import tech.qhuyy.hqngOrder.economy.providers.VaultUnlockedProvider
 import tech.qhuyy.hqngOrder.model.Software
 import java.util.logging.Logger
+import kotlin.jvm.Throws
 
 class EconomyRegistry(
     private val plugin: HqngOrder,
@@ -27,7 +28,8 @@ class EconomyRegistry(
             )
         }
 
-    fun resolve() : EconomyProvider? {
+    @Throws(IllegalStateException::class)
+    fun resolve() : EconomyProvider {
         if (isCompatible(preferred)) {
             createProvider(preferred)?.let {
                 logger.info("Using economy provider: $preferred")
@@ -45,7 +47,7 @@ class EconomyRegistry(
             }
         }
 
-        return null
+        throw IllegalStateException("No compatible economy provider found")
     }
 
     private fun isCompatible(type: EconomyType): Boolean {

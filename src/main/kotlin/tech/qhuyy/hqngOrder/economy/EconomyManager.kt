@@ -1,38 +1,53 @@
 package tech.qhuyy.hqngOrder.economy
 
+import org.bukkit.Bukkit
 import org.bukkit.OfflinePlayer
 import tech.qhuyy.hqngOrder.HqngOrder
 import tech.qhuyy.hqngOrder.model.Software
+import java.util.UUID
+import java.util.logging.Level
 
 class EconomyManager(
     private val plugin: HqngOrder,
     private val platform: Software
 ) {
-    private var provider: EconomyProvider? = null
+    lateinit var provider: EconomyProvider
 
     fun init() {
-        provider = EconomyRegistry(plugin, platform).resolve()
-        if(provider == null) {
-            plugin.logger.severe("No economy provider available. Disabling plugin...")
+        runCatching {
+            EconomyRegistry(plugin, platform).resolve()
+        }.onSuccess { resolved ->
+            provider = resolved
+            plugin.logger.info("Economy provider initialized successfully")
+        }.onFailure { e ->
+            plugin.logger.log(Level.SEVERE, "Failed to initialize economy provider: ${e.message}")
             plugin.server.pluginManager.disablePlugin(plugin)
         }
     }
 
     fun getBalance(player: OfflinePlayer): Double {
-        return provider?.getBalance(player) ?: 0.0
+        return provider.getBalance(player)
     }
 
-    fun hasBalance(player: OfflinePlayer, amount: Double): Boolean {
-        return provider?.hasBalance(player, amount) ?: false
+    fun getBalance(uuid: UUID): Double {
+        return getBalance(Bukkit.getOfflinePlayer(uuid))
+    }
+
+    fun hasEnough(player: OfflinePlayer, amount: Double): Boolean {
+        return provider.hasBalance(player, amount)
     }
 
     fun withdraw(player: OfflinePlayer, amount: Double): Boolean {
-        return provider?.withdraw(player, amount) ?: false
+        return provider.withdraw(player, amount)
     }
 
     fun deposit(player: OfflinePlayer, amount: Double): Boolean {
-        return provider?.deposit(player, amount) ?: false
+        return provider.deposit(player, amount)
     }
 
-    fun formatAmount(amount: Double): String = provider?.formatAmount(amount) ?: "0.00"
+    fun formatAmount(amount: Double): String = provider.formatAmount(amount)
+
+    fun currencyNamePlural(): String = provider.currencyNamePlural()
+
+    fun currencyNameSingular(): String = provider.currencyNameSingular()
 }

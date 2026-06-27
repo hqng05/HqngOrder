@@ -41,6 +41,10 @@ class PlayerPointsProvider(
 
     override fun formatAmount(amount: Double): String = "%,d".format(amount.toInt())
 
+    override fun currencyNamePlural(): String = api.currencyNamePlural
+
+    override fun currencyNameSingular(): String = api.currencyNameSingular
+
     companion object {
         fun create(): PlayerPointsProvider? {
             val plugin = Bukkit.getPluginManager().getPlugin("PlayerPoints")

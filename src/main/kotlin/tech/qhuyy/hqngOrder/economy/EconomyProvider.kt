@@ -13,4 +13,8 @@ interface EconomyProvider {
     fun deposit(player: OfflinePlayer, amount: Double): Boolean
 
     fun formatAmount(amount: Double): String
+
+    fun currencyNamePlural(): String
+
+    fun currencyNameSingular(): String
 }
