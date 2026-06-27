@@ -189,14 +189,23 @@ class OrdersManager(private val plugin: HqngOrder) {
 
         val stash = databaseManager.loadStash(order.buyerUuid).toMutableList()
         val itemsForStash = mutableListOf<ItemStack>()
+        val overflowItems = mutableListOf<ItemStack>()
         var remaining = actualDelivered
         for (item in itemsToDeliver) {
-            if (remaining <= 0) break
+            if (remaining <= 0) {
+                overflowItems.add(item.clone())
+                continue
+            }
             val count = minOf(item.amount, remaining)
             val clone = item.clone()
             clone.amount = count
             itemsForStash.add(clone)
             remaining -= count
+            if (count < item.amount) {
+                val overflowPart = item.clone()
+                overflowPart.amount = item.amount - count
+                overflowItems.add(overflowPart)
+            }
         }
 
         var stashFull = false
@@ -238,6 +247,16 @@ class OrdersManager(private val plugin: HqngOrder) {
         )
 
         plugin.logger.info("Delivery completed for order #${order.id}: $actualDelivered items, paid $payment to ${seller.name}")
+
+        if (overflowItems.isNotEmpty()) {
+            plugin.logger.info("Returning ${overflowItems.sumOf { it.amount }} overflow items to ${seller.name}")
+            for (item in overflowItems) {
+                val leftover = seller.inventory.addItem(item)
+                if (leftover.isNotEmpty()) {
+                    leftover.values.forEach { seller.world.dropItemNaturally(seller.location, it) }
+                }
+            }
+        }
 
         val buyer = plugin.server.getPlayer(order.buyerUuid)
         if (buyer != null && buyer.isOnline) {

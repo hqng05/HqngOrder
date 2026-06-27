@@ -75,6 +75,7 @@ class InputListener(
     @EventHandler(priority = EventPriority.MONITOR)
     fun onPlayerQuit(event: PlayerQuitEvent) {
         removeSession(event.player)
+        guiHandler.removeCategory(event.player.uniqueId)
     }
 
     @EventHandler(priority = EventPriority.LOWEST)
@@ -112,12 +113,12 @@ class InputListener(
                 val totalCost = session.amount * session.price
                 val itemStack = session.itemStack
                 val amount = session.amount
-                removeSession(player)
                 plugin.foliaLib.scheduler.runNextTick {
                     if (!plugin.economyManager.hasEnough(player, totalCost)) {
                         player.sendMessage(formatter.deserializeKey("input.not-enough-money"))
                         return@runNextTick
                     }
+                    removeSession(player)
                     guiHandler.openConfirmOrderGUI(player, itemStack, amount, price)
                 }
             }

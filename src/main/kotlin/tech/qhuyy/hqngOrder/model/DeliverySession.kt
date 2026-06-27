@@ -11,8 +11,10 @@ data class DeliverySession(
     private val infoSlot: Int = 4
 
     fun getDepositedItems(): List<ItemStack> {
-        return inv.contents.filterNotNull()
-            .filterIndexed { index, item -> index != infoSlot && !item.type.isAir }
+        return inv.contents
+            .mapIndexedNotNull { index, item ->
+                if (index == infoSlot || item == null || item.type.isAir) null else item
+            }
             .toList()
     }
 

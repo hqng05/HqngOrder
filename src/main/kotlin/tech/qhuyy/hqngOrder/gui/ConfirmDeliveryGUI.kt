@@ -7,6 +7,7 @@ import net.kyori.adventure.text.minimessage.MiniMessage
 import net.kyori.adventure.text.minimessage.tag.Tag
 import net.kyori.adventure.text.minimessage.tag.resolver.TagResolver
 import org.bukkit.Material
+import java.util.Locale
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
 import tech.qhuyy.hqngOrder.HqngOrder
@@ -36,8 +37,8 @@ class ConfirmDeliveryGUI(private val plugin: HqngOrder) {
         val confirmCfg = plugin.guiConfigManager.getItem("confirm_delivery", "confirm")
         if (confirmCfg != null) {
             val m = try {
-                Material.valueOf(confirmCfg.material.uppercase())
-            } catch (e: Exception) {
+                Material.valueOf(confirmCfg.material.uppercase(Locale.ROOT))
+            } catch (e: IllegalArgumentException) {
                 plugin.logger.warning("Invalid material '${confirmCfg.material}' in confirm_delivery.confirm, falling back to STONE")
                 Material.STONE
             }
@@ -157,8 +158,8 @@ class ConfirmDeliveryGUI(private val plugin: HqngOrder) {
     private fun makeItem(screen: String, key: String): GuiItem? {
         val c = plugin.guiConfigManager.getItem(screen, key) ?: return null
         val m = try {
-            Material.valueOf(c.material.uppercase())
-        } catch (e: Exception) {
+            Material.valueOf(c.material.uppercase(Locale.ROOT))
+        } catch (e: IllegalArgumentException) {
             plugin.logger.warning("Invalid material '${c.material}' in $screen.$key, falling back to STONE")
             Material.STONE
         }
@@ -171,8 +172,8 @@ class ConfirmDeliveryGUI(private val plugin: HqngOrder) {
     private fun makeClick(screen: String, key: String, action: () -> Unit): GuiItem? {
         val c = plugin.guiConfigManager.getItem(screen, key) ?: return null
         val m = try {
-            Material.valueOf(c.material.uppercase())
-        } catch (e: Exception) {
+            Material.valueOf(c.material.uppercase(Locale.ROOT))
+        } catch (e: IllegalArgumentException) {
             plugin.logger.warning("Invalid material '${c.material}' in $screen.$key, falling back to STONE")
             Material.STONE
         }
